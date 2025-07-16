@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# Read commit message from the file passed as argument
+if [ -f "$1" ]; then
+    commit_msg=$(cat "$1")
+else
+    echo "❌ No commit message file found"
+    exit 1
+fi
+
+# Define allowed types
+types="feat|fix|refactor|style|test|docs|build|ops|chore"
+
+# Debug output
+echo "Checking commit message: '$commit_msg'"
+
+# Check conventional commit format
+if ! echo "$commit_msg" | grep -qE "^($types)(\(.+\))?: .{3,}"; then
+    echo "❌ Commit message must follow conventional commit format!"
+    echo ""
+    echo "Format: <type>[optional scope]: <description>"
+    echo ""
+    echo "Allowed types:"
+    echo "  feat     - new feature"
+    echo "  fix      - bug fix"
+    echo "  refactor - code refactoring"
+    echo "  style    - formatting changes"
+    echo "  test     - adding tests"
+    echo "  docs     - documentation"
+    echo "  build    - build system changes"
+    echo "  ops      - operational changes"
+    echo "  chore    - maintenance tasks"
+    echo ""
+    echo "Examples:"
+    echo "  feat: add user authentication"
+    echo "  fix: resolve login issue"
+    echo "  feat(auth): implement JWT tokens"
+    echo ""
+    exit 1
+fi
+
+# Check minimum length
+description=$(echo "$commit_msg" | sed 's/^[^:]*: //')
+if [ ${#description} -lt 3 ]; then
+    echo "❌ Commit description must be at least 3 characters long"
+    exit 1
+fi
+
+echo "✅ Commit message format is valid"
