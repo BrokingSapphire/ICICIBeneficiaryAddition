@@ -33,3 +33,7 @@ go.work.sum
 
 # logs-folder
 logs/
+
+# Build artifacts
+tmp/
+server
