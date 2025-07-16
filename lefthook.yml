@@ -1,0 +1,15 @@
+pre-commit:
+  commands:
+    go-fmt:
+      run: go fmt ./...
+    go-vet:
+      run: go vet ./...
+    go-test:
+      run: go test ./...
+    golangci-lint:
+      run: golangci-lint run
+
+pre-push:
+  commands:
+    go-build:
+      run: go build ./cmd/...
